@@ -1,19 +1,37 @@
-﻿using DomainModels;
+﻿using System.Text.Json;
+using DomainModels;
 namespace Bilbasen
 {
     internal class Program
     {
         static void Main(string[] args)
         {
-            //Eksempel med rigtige biler, lavet af ChatGPT ud fra jeres standart klasse
-            Car fordMustang1963 = new Car("Ford", "Mustang", 1963, "Red", 430);
-            Car toyotaCamry2020 = new Car("Toyota", "Camry", 2020, "Blue", 200);
-            Car chevyCorvette2022 = new Car("Chevrolet", "Corvette", 2022, "Silver", 650);
+            Vehicle[] vehicles = new Vehicle[100];
 
-            Console.WriteLine(fordMustang1963.Brand);
-            Console.WriteLine(toyotaCamry2020.Brand);
-            Console.WriteLine(chevyCorvette2022.Brand);
-            //Det er vigtigt at I finder en god datatype til at opbevare jeres biler / Objekter!
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                vehicles[i] = new Vehicle();
+            }
+
+            //Vehicle[] vehicles = GetJsonData();
+
+            string firstCarBrand = vehicles[0].GetBrand();
+            int firstCarBrandCounter = 0;
+            foreach (Vehicle car in vehicles)
+            {
+                firstCarBrandCounter = car.PrintSpecificVehicle(firstCarBrand, firstCarBrandCounter);
+            }
+            
+            Console.WriteLine($"Total same cars of {firstCarBrand}: {firstCarBrandCounter}");
+            
+            string jsonString = JsonSerializer.Serialize(vehicles, options: new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText("data.json", jsonString);
+        }
+        
+        public static Vehicle[] GetJsonData()
+        {
+            return JsonSerializer.Deserialize<Vehicle[]>(File.ReadAllText("data.json"));
         }
     }
+    
 }
