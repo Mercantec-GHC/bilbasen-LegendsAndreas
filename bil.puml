@@ -1,0 +1,41 @@
+﻿@startuml
+'https://plantuml.com/class-diagram
+
++enum GearType{
+Manual
+Automatic
+}
+
++abstract class Vehicle{
++double Price {get; set;}
++string Brand {get; set;}
++string Model {get; set;}
+
++void SetPrice()
+}
+
++class EvCar #LightBlue{
++int TankCapacity
+-GearType Gear = Automatic
+
++int SetTankCapacity()
+}
+
++class FossilCar{
++int BatteryCharge
+-GearType Gear = Manual
+
++int SetBatteryCharge()
+}
+
+Vehicle <|-- EvCar
+Vehicle <|-- FossilCar 
+
+EvCar --> GearType : Middle text
+FossilCar --> GearType
+
+note left of FossilCar
+    This is a test.
+end note
+
+@enduml
