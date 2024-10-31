@@ -6,26 +6,25 @@ namespace Bilbasen
     {
         static void Main(string[] args)
         {
-            EvCar[] evCars = new EvCar[100];
+            Vehicle[] cars = new Vehicle[200];
 
-            for (int i = 0; i < evCars.Length; i++)
+            for (int i = 0; i < 100; i++)
             {
-                evCars[i] = new EvCar();
-            }
-
-            //Vehicle[] vehicles = GetJsonData();
-
-            string? firstCarBrand = evCars[0].GetBrand();
-            int firstCarBrandCounter = 0;
-            foreach (EvCar car in evCars)
-            {
-                firstCarBrandCounter = car.PrintSpecificVehicle(firstCarBrand, firstCarBrandCounter);
+                cars[i] = new EvCar();
             }
             
-            Console.WriteLine($"Total same cars of {firstCarBrand}: {firstCarBrandCounter}");
+            for (int i = 100; i < 200; i++)
+            {
+                cars[i] = new FossilCar();
+            }
             
-            string jsonString = JsonSerializer.Serialize(evCars, options: new JsonSerializerOptions { WriteIndented = true });
-            File.WriteAllText("data.json", jsonString);
+            foreach (var car in cars)
+            {
+                car.PrintVehicle();
+            }
+            
+            /*string jsonString = JsonSerializer.Serialize(evCars, options: new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText("data.json", jsonString);*/
         }
     }
     

@@ -14,28 +14,82 @@ Automatic
 +void SetPrice()
 }
 
-+class EvCar #LightBlue{
++class Motorcycle {
++int Cylinder
++int Rims
+
++int GetRims()
+}
+
++class FossilCar #LightBlue{
 +int TankCapacity
--GearType Gear = Automatic
+-GearType Gear = Manual
 
 +int SetTankCapacity()
 }
 
-+class FossilCar{
++class EvCar{
 +int BatteryCharge
--GearType Gear = Manual
+-GearType Gear = Automatic
 
 +int SetBatteryCharge()
 }
 
-Vehicle <|-- EvCar
-Vehicle <|-- FossilCar 
+Vehicle <|-- "0...* " EvCar
+Vehicle <|-- "0...*   " FossilCar
+Vehicle <|-- "0...*   " Motorcycle
 
-EvCar --> GearType : Middle text
-FossilCar --> GearType
 
-note left of FossilCar
-    This is a test.
+
+
+note bottom of FossilCar
+    Tis be a test.
 end note
+
+@enduml
+
+@startuml
+agent Developer
+agent "EvCar = new()"
+agent "+EvCar()"
+
+Developer --> "0...*" "EvCar = new()" : Initializes
+"EvCar = new()" --> "+EvCar()" : Constructs
+
+"+EvCar()" --> "Getting Values"
+"Getting Values" --> "+ int PrintSpecificVehicle(string, int)"
+
+card "Getting Values"{
+process "-SetBrand()"
+process "-SetModel()"
+process "-SetYear()"
+process "-SetMileageKm()"
+process "-SetColor()"
+process "-SetWeightKg()"
+process "-SetHorsePower()"
+process "-SetPrice()"
+}
+
+card "+ int PrintSpecificVehicle(string, int)" {
+agent "+PrintVehicle()"
+process "if (Brand == string)"
+process "if (HorsePower > 200)"
+process "else if (Color == Red)"
+process "else if (Year > 1980 && Year < 1999)"
+process "else"
+process "return int"
+process "return ++int"
+process "Print: Not a valid vehicle"
+
+"if (Brand == string)" --> "+PrintVehicle()"
+"if (HorsePower > 200)" --> "+PrintVehicle()"
+"else if (Color == Red)" --> "+PrintVehicle()"
+"else if (Year > 1980 && Year < 1999)" --> "+PrintVehicle()"
+"+PrintVehicle()" --> "return int"
+"+PrintVehicle()" --> "return ++int"
+"else" --> "Print: Not a valid vehicle"
+"Print: Not a valid vehicle" --> "return int"
+}
+
 
 @enduml

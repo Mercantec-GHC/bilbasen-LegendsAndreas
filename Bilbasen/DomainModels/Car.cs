@@ -1,22 +1,32 @@
 ﻿namespace DomainModels
 {
-    public enum GearType
+    public abstract class Vehicle
     {
-        Manual,
-        Automatic
+        public double Price { get; set; }
+        public string? Brand { get; set; }
+        public string? Model { get; set; }
+        public int Year { get; set; }
+        public int KmDriven { get; set; }
+        public string Color { get; set; }
+        public int WeightKg { get; set; }
+        public int HorsePower { get; set; }
+        public int Doors { get; set; }
+
+        public virtual void PrintVehicle()
+        {
+            Console.Write($"----------------------------------------\n" +
+                              $"Brand: {Brand}\n" +
+                              $"Year: {Year}\n" +
+                              $"KM Driven: {KmDriven}\n" +
+                              $"Color: {Color}\n" +
+                              $"Horse Power: {HorsePower}\n" +
+                              $"Door(s): {Doors}\n");
+        }
     }
-    
-    public class EvCar : IVehicle
+
+    public class EvCar : Vehicle
     {
-        public double Price {get;set;}
-        public string? Brand {get;set;}
-        public string? Model {get;set;}
-        private int Year { get; set; }
-        private int MileageKM { get; set; }
-        private string Color { get; set; }
-        private int WeightKg { get; set; }
-        private GearType Gear = GearType.Automatic;
-        private int HorsePower { get; set; }
+        private int DriveRange { get; set; }
 
         public EvCar()
         {
@@ -24,11 +34,11 @@
             string[] Brands = { "Tesla", "Nissan", "Chevrolet", "BMW", "Audi" };
             string[] Models = { "Model S", "Leaf", "Bolt", "i3", "e-tron" };
             string[] Colors = { "Red", "Blue", "Green", "Black", "White" };
-        
+
             SetBrand(Brands[random.Next(Brands.Length)]);
             SetModel(Models[random.Next(Models.Length)]);
-            Year = random.Next(2015, 2023);
-            MileageKM = random.Next(0, 150000);
+            Year = random.Next(1980, 2023);
+            KmDriven = random.Next(0, 150000);
             Color = Colors[random.Next(Colors.Length)];
             WeightKg = random.Next(1500, 3000);
             HorsePower = random.Next(100, 500);
@@ -49,25 +59,21 @@
         public void SetPrice(int price)
         {
             double stupidFuckingGreenTax = 0.9;
-            Price = price*stupidFuckingGreenTax;
+            Price = price * stupidFuckingGreenTax;
         }
-        
+
         public string? GetBrand()
         {
             return Brand;
         }
 
-        public void PrintVehicle()
+        public override void PrintVehicle()
         {
-            Console.WriteLine($"----------------------------------------\n" +
-                              $"Brand: {Brand}\n" +
-                              $"Year: {Year}\n" +
-                              $"MileageKM: {MileageKM}\n" +
-                              $"Color: {Color}\n" +
-                              $"Horse Power: {HorsePower}\n" +
+            base.PrintVehicle();
+            Console.WriteLine($"Range: {DriveRange}\n" +
                               $"----------------------------------------");
         }
-        
+
         public int PrintSpecificVehicle(string firstCarBrand, int firstCarBrandCounter)
         {
             if (Brand == firstCarBrand)
@@ -75,7 +81,7 @@
                 PrintVehicle();
                 return ++firstCarBrandCounter;
             }
-            
+
             if (HorsePower > 200)
             {
                 PrintVehicle();
@@ -96,34 +102,25 @@
             return firstCarBrandCounter;
         }
     }
-    
-    public class FossilCar : IVehicle
+
+    public class FossilCar : Vehicle
     {
-        public double Price {get;set;}
-        public string? Brand {get;set;}
-        public string? Model {get;set;}
-        private int Year { get; set; }
-        private int MileageKM { get; set; }
-        private string Color { get; set; }
-        private int WeightKg { get; set; }
-        private GearType Gear { get; set; }
-        private int HorsePower { get; set; }
-        
+        private int Mpg { get; set; }
+
         public FossilCar()
         {
             Random random = new();
             string[] Colors = { "Red", "Blue", "Green", "Black", "White" };
             string[] Models = { "Camry", "Accord", "Mustang", "Cruz", "X5" };
             string[] Brands = { "Toyota", "Honda", "Ford", "Chevrolet", "BMW" };
-            
+
             SetBrand(Brands[random.Next(Brands.Length)]);
             SetModel(Models[random.Next(Models.Length)]);
             Year = random.Next(2000, 2023);
-            MileageKM = random.Next(0, 300000);
+            KmDriven = random.Next(0, 300000);
             Color = Colors[random.Next(Colors.Length)];
             WeightKg = random.Next(800, 3000);
             HorsePower = random.Next(100, 500);
-            Gear = (GearType)random.Next(2);
             SetPrice(random.Next(5000, 50000));
         }
 
@@ -147,17 +144,13 @@
             return Brand;
         }
 
-        public void PrintVehicle()
+        public override void PrintVehicle()
         {
-            Console.WriteLine($"----------------------------------------\n" +
-                              $"Brand: {Brand}" +
-                              $"Year: {Year}\n" +
-                              $"MileageKM: {MileageKM}\n" +
-                              $"Color: {Color}\n" +
-                              $"Horse Power: {HorsePower}\n" +
+            base.PrintVehicle();
+            Console.WriteLine($"Miles pr. gallon: {Mpg}\n" +
                               $"----------------------------------------");
         }
-        
+
         public int PrintSpecificVehicle(string firstCarBrand, int firstCarBrandCounter)
         {
             if (Brand == firstCarBrand)
@@ -165,7 +158,7 @@
                 PrintVehicle();
                 return ++firstCarBrandCounter;
             }
-            
+
             if (HorsePower > 200)
             {
                 PrintVehicle();
@@ -187,7 +180,7 @@
         }
     }
 
-    public interface IVehicle
+    /*public interface IVehicle
     {
         double Price { get; set; }
         string Brand { get; set; }
@@ -196,7 +189,8 @@
         void SetPrice(int price);
         void SetBrand(string brandName);
         void SetModel(string modelName);
+
         void PrintVehicle();
         string? GetBrand();
-    }
+    }*/
 }
